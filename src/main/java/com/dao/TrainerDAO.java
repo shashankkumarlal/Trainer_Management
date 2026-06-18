@@ -1,5 +1,76 @@
 package com.dao;
 
+import com.entities.Trainer;
+import com.util.HibernateUtil;
+import org.hibernate.Transaction;
+
+import java.util.List;
+
+import org.hibernate.Session;
+
 public class TrainerDAO {
-    
+
+    Transaction t = null;
+
+    // Add Trainer
+    public void addTrainer(Trainer trainer){
+        Transaction t = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            t = session.beginTransaction();
+            session.persist(trainer);
+            t.commit();
+        } catch (Exception e){
+            if (t != null){
+                t.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    // Search Trainer - by ID 
+    public Trainer getTrainerById(Long id){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            return session.get(Trainer.class, id);
+        }
+    }
+
+    // Update Trainer
+    public void updateTrainer(Trainer trainer){
+        Transaction t = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            t = session.beginTransaction();
+            session.merge(trainer);
+            t.commit();
+        } catch (Exception e){
+            if (t != null){
+                t.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    // Delete Trainer
+    public void deleteTrainer(Long id){
+        Transaction txn = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            txn = session.beginTransaction();
+            Trainer t = session.get(Trainer.class, id);
+            if (t != null){
+                session.remove(t);
+            }
+            txn.commit();
+        } catch (Exception e){
+            if (txn != null){
+                txn.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    // View all Trainers
+    public List<Trainer> showAllTrainer(){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            return session.createQuery("FROM Trainer", Trainer.class).getResultList();
+        }
+    }
 }

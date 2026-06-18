@@ -24,7 +24,7 @@ public class Trainer {
     @Column(name = "mobile", nullable = false, unique=true, length=10)
     private String mobile;
 
-    @OneToMany(mappedBy = "trainer_Id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TrainingBatches> t_batches;
 
 //Constructor
@@ -75,7 +75,7 @@ public class Trainer {
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
-    
+
     @Override
     public String toString() {
         return "Trainer [id=" + id + ", name=" + name + ", technology=" + technology + ", experience=" + experience
