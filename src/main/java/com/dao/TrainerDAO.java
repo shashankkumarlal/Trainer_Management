@@ -5,6 +5,7 @@ import com.util.HibernateUtil;
 import org.hibernate.Transaction;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.hibernate.Session;
 
@@ -28,9 +29,9 @@ public class TrainerDAO {
     }
 
     // Search Trainer - by ID 
-    public Trainer getTrainerById(Long id){
+    public Optional<Trainer> getTrainerById(Long id){
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
-            return session.get(Trainer.class, id);
+            return Optional.ofNullable(session.get(Trainer.class, id));
         }
     }
 
@@ -68,9 +69,13 @@ public class TrainerDAO {
     }
 
     // View all Trainers
-    public List<Trainer> showAllTrainer(){
+    public Optional<List<Trainer>> showAllTrainer(){
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
-            return session.createQuery("FROM Trainer", Trainer.class).getResultList();
-        }
+            List<Trainer> trainers = session.createQuery("FROM Trainer", Trainer.class).getResultList();
+            return Optional.of(trainers); // never ofNullable, list won't be null
+        } catch (Exception e) {
+        e.printStackTrace();
+        return Optional.empty(); // signals something went wrong
+    }
     }
 }

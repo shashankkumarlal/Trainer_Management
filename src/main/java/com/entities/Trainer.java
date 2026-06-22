@@ -7,9 +7,9 @@ import jakarta.persistence.*;
 @Table(name = "trainers")
 public class Trainer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="trainer_Id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "name", nullable = false, length=50)
     private String name;
@@ -28,7 +28,7 @@ public class Trainer {
     private List<TrainingBatches> t_batches;
 
 //Constructor
-    public Trainer(Integer id, String name, List<String> technology, int experience, String email, String mobile) {
+    public Trainer(Long id, String name, List<String> technology, int experience, String email, String mobile) {
         this.id = id;
         this.name = name;
         this.technology = technology;
@@ -39,10 +39,10 @@ public class Trainer {
     public Trainer(){}
 
 // Getter Setter
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getName() {
